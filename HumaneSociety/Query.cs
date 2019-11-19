@@ -394,13 +394,25 @@ namespace HumaneSociety
             }
             return output.ToList();
         }
-         
+
         // TODO: Misc Animal Things
-        internal static int GetCategoryId(string categoryName)
+        internal static int? GetCategoryId(string categoryName)
         {
-            return db.Categories.Where(n => n.Name == categoryName).FirstOrDefault().CategoryId;
+            try
+            {
+                return db.Categories.Where(n => n.Name == categoryName).FirstOrDefault().CategoryId;
+            }
+            catch (NullReferenceException nullRef)
+            {
+                Console.WriteLine(nullRef);
+                return null;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
         }
-        
         internal static Room GetRoom(int animalId)
         {
             return db.Rooms.Where(r => r.AnimalId == animalId).FirstOrDefault();
@@ -410,9 +422,22 @@ namespace HumaneSociety
             db.Rooms.InsertOnSubmit(new Room { AnimalId = animalId,RoomId = roomId});
             db.SubmitChanges();
         }
-        internal static int GetDietPlanId(string dietPlanName)
+        internal static int? GetDietPlanId(string dietPlanName)
         {
-            return db.DietPlans.Where(n => n.Name == dietPlanName).FirstOrDefault().DietPlanId;
+            try
+            {
+                return db.DietPlans.Where(n => n.Name == dietPlanName).FirstOrDefault().DietPlanId;
+            }
+            catch (NullReferenceException nullRef)
+            {
+                Console.WriteLine(nullRef);
+                return null;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
         }
 
         // TODO: Adoption CRUD Operations
