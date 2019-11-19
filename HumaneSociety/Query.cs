@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Data.SqlClient;
 namespace HumaneSociety
 {
     public static class Query
@@ -160,13 +160,44 @@ namespace HumaneSociety
             return employeeWithUserName == null;
         }
 
-
         //// TODO Items: ////
         
         // TODO: Allow any of the CRUD operations to occur here
         internal static void RunEmployeeQueries(Employee employee, string crudOperation)
         {
-            throw new NotImplementedException();
+            Employee employeeFromDB;
+            try
+            {
+                switch (crudOperation)
+                {
+                    case "create":
+                        db.Employees.InsertOnSubmit(employee);
+                        db.SubmitChanges();
+                        break;
+                    case "read":
+                        employeeFromDB = db.Employees.Where(e => e.EmployeeId == employee.EmployeeId).FirstOrDefault();
+                        UserInterface.DisplayEmployeeInfo(employeeFromDB);
+                        break;
+                    case "update":
+                        employeeFromDB = db.Employees.Where(e => e.EmployeeId == employee.EmployeeId).FirstOrDefault();
+                        employeeFromDB = employee;
+                        db.SubmitChanges();
+                        break;
+                    case "delete":
+                        employeeFromDB = db.Employees.Where(e => e.EmployeeId == employee.EmployeeId).FirstOrDefault();
+                        db.Employees.DeleteOnSubmit(employeeFromDB);
+                        db.SubmitChanges();
+                        break;
+                }
+            }
+            catch(NullReferenceException nullRef)
+            {
+                Console.WriteLine(nullRef);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         // TODO: Animal CRUD Operations
