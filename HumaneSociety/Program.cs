@@ -11,9 +11,10 @@ namespace HumaneSociety
         static void Main(string[] args)
         {
             //PointOfEntry.Run();
-            Employee employee = new Employee() { EmployeeId = 1, FirstName = "a", LastName = "b", UserName = "ab", Password = "pass", EmployeeNumber = 1 };
-            Query.RunEmployeeQueries(employee, "update");
-            Query.RunEmployeeQueries(employee, "read");
+            Dictionary<int, string> input = new Dictionary<int, string>();
+            input.Add(1, "1");
+            UserInterface.DisplayAnimals(Query.SearchForAnimalsByMultipleTraits(input).ToList());
+            Console.ReadLine();
         }
     }
 }

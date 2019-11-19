@@ -310,9 +310,67 @@ namespace HumaneSociety
         }
         
         // TODO: Animal Multi-Trait Search
-        internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
+        internal static List<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> traits) // parameter(s)?
         {
-            throw new NotImplementedException();
+            List<Animal> output = db.Animals.ToList();
+            string input;
+            if(traits.TryGetValue(1,out input))
+            {
+                int inputInt;
+                if (int.TryParse(input, out inputInt))
+                {
+                    output = output.Where(a => a.CategoryId == inputInt).ToList() ;
+                }
+            }
+            if (traits.TryGetValue(2, out input))
+            {
+                output = output.Where(a => a.Name == input).ToList();
+            }
+            if(traits.TryGetValue(3,out input))
+            {
+                int inputInt;
+                if (int.TryParse(input, out inputInt))
+                {
+                    output = output.Where(a => a.Age == inputInt).ToList();
+                }
+            }
+            if (traits.TryGetValue(4, out input))
+            {
+                output = output.Where(a => a.Demeanor == input).ToList();
+            }
+            if(traits.TryGetValue(5, out input))
+            {
+                bool inputBool;
+                if (bool.TryParse(input, out inputBool))
+                {
+                    output = output.Where(a => a.KidFriendly == inputBool).ToList();
+                }
+            }
+            if (traits.TryGetValue(6, out input))
+            {
+                bool inputBool;
+                if (bool.TryParse(input, out inputBool))
+                {
+                    output = output.Where(a => a.PetFriendly == inputBool).ToList();
+                }
+            }
+            if(traits.TryGetValue(7,out input))
+            {
+                int inputInt;
+                if (int.TryParse(input, out inputInt))
+                {
+                    output = output.Where(a => a.Weight == inputInt).ToList();
+                }
+            }
+            if (traits.TryGetValue(8,out input))
+            {
+                int inputInt;
+                if (int.TryParse(input, out inputInt))
+                {
+                    output = output.Where(a => a.AnimalId == inputInt).ToList();
+                }
+            }
+            return output.ToList();
         }
          
         // TODO: Misc Animal Things
