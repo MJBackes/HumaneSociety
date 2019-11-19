@@ -165,33 +165,21 @@ namespace HumaneSociety
         // TODO: Allow any of the CRUD operations to occur here
         internal static void RunEmployeeQueries(Employee employee, string crudOperation)
         {
-            Employee employeeFromDB;
             try
             {
                 switch (crudOperation)
                 {
                     case "create":
-                        db.Employees.InsertOnSubmit(employee);
-                        db.SubmitChanges();
+                        AddEmployee(employee);
                         break;
                     case "read":
-                        employeeFromDB = db.Employees.Where(e => e.EmployeeId == employee.EmployeeId).FirstOrDefault();
-                        UserInterface.DisplayEmployeeInfo(employeeFromDB);
+                        ReadEmployee(employee);
                         break;
                     case "update":
-                        employeeFromDB = db.Employees.Where(e => e.EmployeeId == employee.EmployeeId).FirstOrDefault();
-                        employeeFromDB.EmployeeNumber = employee.EmployeeNumber;
-                        employeeFromDB.FirstName = employee.FirstName;
-                        employeeFromDB.LastName = employee.LastName;
-                        employeeFromDB.UserName = employee.UserName;
-                        employeeFromDB.Password = employee.Password;
-                        employeeFromDB.Email = employee.Email;
-                        db.SubmitChanges();
+                        UpdateEmployee(employee);
                         break;
                     case "delete":
-                        employeeFromDB = db.Employees.Where(e => e.EmployeeId == employee.EmployeeId).FirstOrDefault();
-                        db.Employees.DeleteOnSubmit(employeeFromDB);
-                        db.SubmitChanges();
+                        DeleteEmployee(employee);
                         break;
                 }
             }
@@ -204,7 +192,33 @@ namespace HumaneSociety
                 Console.WriteLine(e);
             }
         }
-
+        private static void AddEmployee(Employee employee)
+        {
+            db.Employees.InsertOnSubmit(employee);
+            db.SubmitChanges();
+        }
+        private static void ReadEmployee(Employee employee)
+        {
+            Employee employeeFromDB = db.Employees.Where(e => e.EmployeeId == employee.EmployeeId).FirstOrDefault();
+            UserInterface.DisplayEmployeeInfo(employeeFromDB);
+        }
+        private static void UpdateEmployee(Employee employee)
+        {
+            Employee employeeFromDB = db.Employees.Where(e => e.EmployeeId == employee.EmployeeId).FirstOrDefault();
+            employeeFromDB.EmployeeNumber = employee.EmployeeNumber;
+            employeeFromDB.FirstName = employee.FirstName;
+            employeeFromDB.LastName = employee.LastName;
+            employeeFromDB.UserName = employee.UserName;
+            employeeFromDB.Password = employee.Password;
+            employeeFromDB.Email = employee.Email;
+            db.SubmitChanges();
+        }
+        private static void DeleteEmployee(Employee employee)
+        {
+            Employee employeeFromDB = db.Employees.Where(e => e.EmployeeId == employee.EmployeeId).FirstOrDefault();
+            db.Employees.DeleteOnSubmit(employeeFromDB);
+            db.SubmitChanges();
+        }
         // TODO: Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
         {
