@@ -208,17 +208,91 @@ namespace HumaneSociety
         // TODO: Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
         {
-            throw new NotImplementedException();
+            try
+            {
+                db.Animals.InsertOnSubmit(animal);
+                db.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         internal static Animal GetAnimalByID(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return db.Animals.Where(a => a.AnimalId == id).FirstOrDefault();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
         }
 
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
-        {            
-            throw new NotImplementedException();
+        {
+            Animal animalFromDb;
+            animalFromDb = db.Animals.Where(e => e.AnimalId == animalId).FirstOrDefault();
+            string input;
+            if(updates.TryGetValue(1, out input))
+            {
+                int inputInt;
+                if (int.TryParse(input, out inputInt))
+                {
+                    animalFromDb.CategoryId = inputInt;
+                }
+            }
+            if(updates.TryGetValue(2, out input))
+            {
+                animalFromDb.Name = input;
+            }
+            if(updates.TryGetValue(3, out input))
+            {
+                int inputInt;
+                if(int.TryParse(input, out inputInt))
+                {
+                    animalFromDb.Age = inputInt;
+                }
+            }
+            if(updates.TryGetValue(4, out input))
+            {
+                animalFromDb.Demeanor = input;
+            }
+            if(updates.TryGetValue(5, out input))
+            {
+                if(input == "false")
+                {
+                    animalFromDb.KidFriendly = false;
+                }
+                else
+                {
+                    animalFromDb.KidFriendly = true;
+                }               
+            }
+            if (updates.TryGetValue(6, out input))
+            {
+                if (input == "false")
+                {
+                    animalFromDb.PetFriendly = false;
+                }
+                else
+                {
+                    animalFromDb.PetFriendly = true;
+                }
+
+            }     
+            if(updates.TryGetValue(7, out input))
+            {
+                int inputInt;
+                if(int.TryParse(input, out inputInt))
+                {
+                    animalFromDb.Weight = inputInt;
+                } 
+            }
+            db.SubmitChanges();
         }
 
         internal static void RemoveAnimal(Animal animal)
