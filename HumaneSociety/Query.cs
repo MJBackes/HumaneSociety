@@ -180,7 +180,12 @@ namespace HumaneSociety
                         break;
                     case "update":
                         employeeFromDB = db.Employees.Where(e => e.EmployeeId == employee.EmployeeId).FirstOrDefault();
-                        employeeFromDB = employee;
+                        employeeFromDB.EmployeeNumber = employee.EmployeeNumber;
+                        employeeFromDB.FirstName = employee.FirstName;
+                        employeeFromDB.LastName = employee.LastName;
+                        employeeFromDB.UserName = employee.UserName;
+                        employeeFromDB.Password = employee.Password;
+                        employeeFromDB.Email = employee.Email;
                         db.SubmitChanges();
                         break;
                     case "delete":
