@@ -9,9 +9,13 @@ namespace HumaneSociety
     class Program
     {
         static void Main(string[] args)
-        { 
+        {
             //PointOfEntry.Run()        
-            Console.WriteLine(Query.GetCategoryId("Dog"));
+            Animal animal = Query.GetAnimalByID(1);
+            Client client = Query.GetClient("AAcompanado", "password");
+            List<Adoption> adoptions = Query.GetPendingAdoptions();
+            Query.UpdateAdoption(true, adoptions[0]);
+            Query.RemoveAdoption(animal.AnimalId, client.ClientId);
             Console.ReadLine();
         }
     }
