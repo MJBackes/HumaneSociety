@@ -239,11 +239,12 @@ namespace HumaneSociety
             string input;
             if(updates.TryGetValue(1, out input))
             {
-                int inputInt;
-                if (int.TryParse(input, out inputInt))
+                if (int.TryParse(input, out int inputInt))
                 {
                     animalFromDb.CategoryId = inputInt;
                 }
+                else if (input == null)
+                    animalFromDb.CategoryId = null;
             }
             if(updates.TryGetValue(2, out input))
             {
@@ -251,11 +252,12 @@ namespace HumaneSociety
             }
             if(updates.TryGetValue(3, out input))
             {
-                int inputInt;
-                if(int.TryParse(input, out inputInt))
+                if(int.TryParse(input, out int inputInt))
                 {
                     animalFromDb.Age = inputInt;
                 }
+                else if (input == null)
+                    animalFromDb.CategoryId = null;
             }
             if(updates.TryGetValue(4, out input))
             {
@@ -263,34 +265,26 @@ namespace HumaneSociety
             }
             if(updates.TryGetValue(5, out input))
             {
-                if(input == "false")
-                {
-                    animalFromDb.KidFriendly = false;
-                }
-                else
-                {
-                    animalFromDb.KidFriendly = true;
-                }               
+                if (bool.TryParse(input, out bool inputBool))
+                    animalFromDb.KidFriendly = inputBool;
+                else if (input == null)
+                    animalFromDb.KidFriendly = null;
             }
             if (updates.TryGetValue(6, out input))
             {
-                if (input == "false")
-                {
-                    animalFromDb.PetFriendly = false;
-                }
-                else
-                {
-                    animalFromDb.PetFriendly = true;
-                }
-
+                if (bool.TryParse(input, out bool inputBool))
+                    animalFromDb.PetFriendly = inputBool;
+                else if (input == null)
+                    animalFromDb.PetFriendly = null;
             }     
             if(updates.TryGetValue(7, out input))
             {
-                int inputInt;
-                if(int.TryParse(input, out inputInt))
+                if(int.TryParse(input, out int inputInt))
                 {
                     animalFromDb.Weight = inputInt;
-                } 
+                }
+                else if (input == null)
+                    animalFromDb.CategoryId = null;
             }
             db.SubmitChanges();
         }
@@ -316,10 +310,13 @@ namespace HumaneSociety
             string input;
             if(traits.TryGetValue(1,out input))
             {
-                int inputInt;
-                if (int.TryParse(input, out inputInt))
+                if (int.TryParse(input, out int inputInt))
                 {
                     output = output.Where(a => a.CategoryId == inputInt).ToList() ;
+                }
+                else if(input == null)
+                {
+                    output = output.Where(a => a.CategoryId == null).ToList();
                 }
             }
             if (traits.TryGetValue(2, out input))
@@ -328,10 +325,13 @@ namespace HumaneSociety
             }
             if(traits.TryGetValue(3,out input))
             {
-                int inputInt;
-                if (int.TryParse(input, out inputInt))
+                if (int.TryParse(input, out int inputInt))
                 {
                     output = output.Where(a => a.Age == inputInt).ToList();
+                }
+                else if (input == null)
+                {
+                    output = output.Where(a => a.Age == null).ToList();
                 }
             }
             if (traits.TryGetValue(4, out input))
@@ -340,32 +340,40 @@ namespace HumaneSociety
             }
             if(traits.TryGetValue(5, out input))
             {
-                bool inputBool;
-                if (bool.TryParse(input, out inputBool))
+                if (bool.TryParse(input, out bool inputBool))
                 {
                     output = output.Where(a => a.KidFriendly == inputBool).ToList();
+                }
+                else if (input == null)
+                {
+                    output = output.Where(a => a.KidFriendly == null).ToList();
                 }
             }
             if (traits.TryGetValue(6, out input))
             {
-                bool inputBool;
-                if (bool.TryParse(input, out inputBool))
+                if (bool.TryParse(input, out bool inputBool))
                 {
                     output = output.Where(a => a.PetFriendly == inputBool).ToList();
+                }
+                else if (input == null)
+                {
+                    output = output.Where(a => a.KidFriendly == null).ToList();
                 }
             }
             if(traits.TryGetValue(7,out input))
             {
-                int inputInt;
-                if (int.TryParse(input, out inputInt))
+                if (int.TryParse(input, out int inputInt))
                 {
                     output = output.Where(a => a.Weight == inputInt).ToList();
+                }
+                else if (input == null)
+                {
+                    output = output.Where(a => a.Weight == null).ToList();
                 }
             }
             if (traits.TryGetValue(8,out input))
             {
-                int inputInt;
-                if (int.TryParse(input, out inputInt))
+                if (int.TryParse(input, out int inputInt))
                 {
                     output = output.Where(a => a.AnimalId == inputInt).ToList();
                 }
@@ -383,7 +391,11 @@ namespace HumaneSociety
         {
             return db.Rooms.Where(r => r.AnimalId == animalId).FirstOrDefault();
         }
-        
+        internal static void SetRoom(int animalId,int roomId)
+        {
+            db.Rooms.InsertOnSubmit(new Room { AnimalId = animalId,RoomId = roomId});
+            db.SubmitChanges();
+        }
         internal static int GetDietPlanId(string dietPlanName)
         {
             return db.DietPlans.Where(n => n.Name == dietPlanName).FirstOrDefault().DietPlanId;
