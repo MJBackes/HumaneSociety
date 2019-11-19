@@ -419,14 +419,18 @@ namespace HumaneSociety
         }
 
         // TODO: Shots Stuff
-        internal static IQueryable<AnimalShot> GetShots(Animal animal)
+        internal static List<AnimalShot> GetShots(Animal animal)
         {
-            throw new NotImplementedException();
+            return db.AnimalShots.Where(a => a.AnimalId == animal.AnimalId).ToList();
         }
 
         internal static void UpdateShot(string shotName, Animal animal)
         {
-            throw new NotImplementedException();
+            AnimalShot animalShot = new AnimalShot();
+            animalShot.AnimalId = animal.AnimalId;
+            animalShot.ShotId = db.Shots.Where(s => s.Name == shotName).FirstOrDefault().ShotId;
+            animalShot.DateReceived = new DateTime();
+            db.AnimalShots.InsertOnSubmit(animalShot);
         }
     }
 }
