@@ -57,12 +57,12 @@ namespace HumaneSociety
     partial void InsertRoom(Room instance);
     partial void UpdateRoom(Room instance);
     partial void DeleteRoom(Room instance);
-    partial void InsertUSState(USState instance);
-    partial void UpdateUSState(USState instance);
-    partial void DeleteUSState(USState instance);
     partial void InsertShot(Shot instance);
     partial void UpdateShot(Shot instance);
     partial void DeleteShot(Shot instance);
+    partial void InsertUSState(USState instance);
+    partial void UpdateUSState(USState instance);
+    partial void DeleteUSState(USState instance);
     #endregion
 		
 		public HumaneSocietyDataContext() : 
@@ -167,19 +167,19 @@ namespace HumaneSociety
 			}
 		}
 		
-		public System.Data.Linq.Table<USState> USStates
-		{
-			get
-			{
-				return this.GetTable<USState>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Shot> Shots
 		{
 			get
 			{
 				return this.GetTable<Shot>();
+			}
+		}
+		
+		public System.Data.Linq.Table<USState> USStates
+		{
+			get
+			{
+				return this.GetTable<USState>();
 			}
 		}
 	}
@@ -2312,6 +2312,120 @@ namespace HumaneSociety
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Shots")]
+	public partial class Shot : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ShotId;
+		
+		private string _Name;
+		
+		private EntitySet<AnimalShot> _AnimalShots;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnShotIdChanging(int value);
+    partial void OnShotIdChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    #endregion
+		
+		public Shot()
+		{
+			this._AnimalShots = new EntitySet<AnimalShot>(new Action<AnimalShot>(this.attach_AnimalShots), new Action<AnimalShot>(this.detach_AnimalShots));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShotId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ShotId
+		{
+			get
+			{
+				return this._ShotId;
+			}
+			set
+			{
+				if ((this._ShotId != value))
+				{
+					this.OnShotIdChanging(value);
+					this.SendPropertyChanging();
+					this._ShotId = value;
+					this.SendPropertyChanged("ShotId");
+					this.OnShotIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(50)")]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Shot_AnimalShot", Storage="_AnimalShots", ThisKey="ShotId", OtherKey="ShotId")]
+		public EntitySet<AnimalShot> AnimalShots
+		{
+			get
+			{
+				return this._AnimalShots;
+			}
+			set
+			{
+				this._AnimalShots.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_AnimalShots(AnimalShot entity)
+		{
+			this.SendPropertyChanging();
+			entity.Shot = this;
+		}
+		
+		private void detach_AnimalShots(AnimalShot entity)
+		{
+			this.SendPropertyChanging();
+			entity.Shot = null;
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.USStates")]
 	public partial class USState : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -2447,120 +2561,6 @@ namespace HumaneSociety
 		{
 			this.SendPropertyChanging();
 			entity.USState = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Shots")]
-	public partial class Shot : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ShotId;
-		
-		private string _Name;
-		
-		private EntitySet<AnimalShot> _AnimalShots;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnShotIdChanging(int value);
-    partial void OnShotIdChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    #endregion
-		
-		public Shot()
-		{
-			this._AnimalShots = new EntitySet<AnimalShot>(new Action<AnimalShot>(this.attach_AnimalShots), new Action<AnimalShot>(this.detach_AnimalShots));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShotId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ShotId
-		{
-			get
-			{
-				return this._ShotId;
-			}
-			set
-			{
-				if ((this._ShotId != value))
-				{
-					this.OnShotIdChanging(value);
-					this.SendPropertyChanging();
-					this._ShotId = value;
-					this.SendPropertyChanged("ShotId");
-					this.OnShotIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(50)")]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Shot_AnimalShot", Storage="_AnimalShots", ThisKey="ShotId", OtherKey="ShotId")]
-		public EntitySet<AnimalShot> AnimalShots
-		{
-			get
-			{
-				return this._AnimalShots;
-			}
-			set
-			{
-				this._AnimalShots.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_AnimalShots(AnimalShot entity)
-		{
-			this.SendPropertyChanging();
-			entity.Shot = this;
-		}
-		
-		private void detach_AnimalShots(AnimalShot entity)
-		{
-			this.SendPropertyChanging();
-			entity.Shot = null;
 		}
 	}
 }
